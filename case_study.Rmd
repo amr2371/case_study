@@ -1,6 +1,6 @@
 ---
 title: "Case Study"
-output: github_document
+output: html_document
 ---
 
 Today we're studying a case.
@@ -31,6 +31,7 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ```{r}
 library(p8105.datasets)
+library(leaflet)
 
 data(nyc_airbnb)
 
@@ -142,5 +143,17 @@ nyc_airbnb %>%
   mutate(neighbourhood = fct_reorder(neighbourhood, price)) %>% 
   ggplot(aes(x=lat, y=long, color=price)) +
   geom_point(alpha=0.5)
+```
+
+
+```{r}
+nyc_airbnb %>% 
+  filter(borough == "Manhattan",
+         room_type == "Entire home/apt",
+        price <= 1000) %>% 
+  sample_n(2000) %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(~lat, ~long)
 ```
 
